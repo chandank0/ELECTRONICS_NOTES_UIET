@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundali Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .control-group {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kundali Calculator</h1>
+        <div class="control-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+        </div>
+        <div class="control-group">
+            <label for="time">Time of Birth:</label>
+            <input type="time" id="time" required>
+        </div>
+        <div class="control-group">
+            <label for="place">Place of Birth:</label>
+            <input type="text" id="place" placeholder="City, Country" required>
+        </div>
+        <button onclick="calculateKundali()">Calculate Kundali</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateKundali() {
+            const dobInput = document.getElementById('dob').value;
+            const timeInput = document.getElementById('time').value;
+            const placeInput = document.getElementById('place').value;
+            
+            if (!dobInput || !timeInput || !placeInput) {
+                alert('Please fill in all the fields.');
+                return;
+            }
+
+            const dob = new Date(`${dobInput}T${timeInput}`);
+            const sunSign = getSunSign(dob);
+            const moonSign = getMoonSign(dob);
+            const rashi = getRashi(dob);
+            const planetaryPositions = getPlanetaryPositions(dob);
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p>Date of Birth: ${dob.toDateString()}</p>
+                <p>Time of Birth: ${dob.toTimeString().split(' ')[0]}</p>
+                <p>Place of Birth: ${placeInput}</p>
+                <p>Sun Sign: ${sunSign}</p>
+                <p>Moon Sign: ${moonSign}</p>
+                <p>Rashi (Zodiac Sign): ${rashi}</p>
+                <p>Planetary Positions:</p>
+                <ul>
+                    ${planetaryPositions.map(p => `<li>${p.name}: ${p.position}</li>`).join('')}
+                </ul>
+            `;
+        }
+
+        function getSunSign(date) {
+            const month = date.getMonth() + 1; // Months are zero-based
+            const day = date.getDate();
+            
+            if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
+            if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return 'Pisces';
+            if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
+            if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
+            if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
+            if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
+            if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
+            if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
+            if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
+            if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
+            if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagittarius';
+            if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+            
+            return 'Unknown';
+        }
+
+        function getMoonSign(date) {
+            // Placeholder function - actual calculation would require astronomical data
+            return 'Taurus'; // This is a dummy value for demonstration purposes
+        }
+
+        function getRashi(date) {
+            const month = date.getMonth() + 1; // Months are zero-based
+            const day = date.getDate();
+            
+            if ((month === 1 && day >= 15) || (month === 2 && day <= 14)) return 'Capricorn (Makara)';
+            if ((month === 2 && day >= 15) || (month === 3 && day <= 14)) return 'Aquarius (Kumbha)';
+            if ((month === 3 && day >= 15) || (month === 4 && day <= 14)) return 'Pisces (Meena)';
+            if ((month === 4 && day >= 15) || (month === 5 && day <= 14)) return 'Aries (Mesha)';
+            if ((month === 5 && day >= 15) || (month === 6 && day <= 14)) return 'Taurus (Vrishabha)';
+            if ((month === 6 && day >= 15) || (month === 7 && day <= 14)) return 'Gemini (Mithuna)';
+            if ((month === 7 && day >= 15) || (month === 8 && day <= 14)) return 'Cancer (Karka)';
+            if ((month === 8 && day >= 15) || (month === 9 && day <= 14)) return 'Leo (Simha)';
+            if ((month === 9 && day >= 15) || (month === 10 && day <= 14)) return 'Virgo (Kanya)';
+            if ((month === 10 && day >= 15) || (month === 11 && day <= 14)) return 'Libra (Tula)';
+            if ((month === 11 && day >= 15) || (month === 12 && day <= 14)) return 'Scorpio (Vrishchika)';
+            if ((month === 12 && day >= 15) || (month === 1 && day <= 14)) return 'Sagittarius (Dhanu)';
+            
+            return 'Unknown';
+        }
+
+        function getPlanetaryPositions(date) {
+            // Placeholder data for planetary positions
+            // In a real application, use an astronomy library or API for precise data
+            return [
+                { name: 'Sun', position: 'Aries' },
+                { name: 'Moon', position: 'Taurus' },
+                { name: 'Mars', position: 'Gemini' },
+                { name: 'Mercury', position: 'Cancer' },
+                { name: 'Jupiter', position: 'Leo' },
+                { name: 'Venus', position: 'Virgo' },
+                { name: 'Saturn', position: 'Libra' }
+            ];
+        }
+    </script>
+</body>
+</html>
